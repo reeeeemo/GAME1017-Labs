@@ -1,0 +1,14 @@
+<Root>
+    <PlayerID>39428372</PlayerID>
+    <Health>100</Health>
+    <Date day="27" month="January" year="2023"/>
+    <Damage>15</Damage>
+    <List count="6">
+        <Item>5</Item>
+        <Item>2</Item>
+        <Item>83</Item>
+        <Item>90</Item>
+        <Item>103</Item>
+        <Item>32</Item>
+    </List>
+</Root>
