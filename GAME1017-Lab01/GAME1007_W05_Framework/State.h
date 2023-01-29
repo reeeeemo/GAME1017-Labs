@@ -58,10 +58,33 @@ private:
 	bool plrCanShoot; // Well, can player shoot?
 };
 
-// Make Definition for pause state
+// Pause State
+class PauseState : public State
+{
+public:
+	PauseState();
+	virtual void Enter(); // Pure virtual function. No definition
+	virtual void Update();
+	virtual void Render();
+	virtual void Exit();
 
+private:
+	SDL_Window* m_pauseWindow;
+	SDL_Renderer* m_pauseRenderer;
+};
 // Make definition for end state
+class EndState : public State
+{
+public:
+	EndState();
+	virtual void Enter(); // Pure virtual function. No definition
+	virtual void Update();
+	virtual void Render();
+	virtual void Exit();
 
+private:
+
+};
 
 
 // This is essential for static properties. Declare them OUTSIDE their class but with class scope.

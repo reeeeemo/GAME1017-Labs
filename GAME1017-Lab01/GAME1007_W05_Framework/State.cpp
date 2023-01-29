@@ -13,8 +13,10 @@ TitleState::TitleState(){}
 void TitleState::Enter()
 {
 	std::cout << "Entering TitleState!" << std::endl;
-	// load music track
-	// ad to map, and play it
+
+	Mix_VolumeMusic(36);
+
+	Mix_PlayMusic(Engine::backgroundMusic["titleMusic"], -1);
 }
 
 void TitleState::Update()
@@ -32,8 +34,6 @@ void TitleState::Render()
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 
 	// Any unique rendering in TitleState goes here ...
-
-	State::Render(); // This invokes SDL_RenderPresent
 }
 
 void TitleState::Exit()
@@ -236,8 +236,8 @@ void GameState::Update()
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_P))
 	{
 		std::cout << "Changing to PauseState" << std::endl;
-		//Pause the music track.
-		// STMA::PushState(new PAUSESTATE());
+		Mix_PauseMusic(); // Pauses all sounds, head empty.
+		STMA::PushState(new PauseState()); // Pause time!
 	}
 	// Handles if Spacebar is pressed to shoot
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_SPACE))
@@ -249,9 +249,12 @@ void GameState::Update()
 				400, true));
 		}
 	}
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_X))
+	{
+		std::cout << "Changing to EndState" << std::endl;
+		STMA::ChangeState(new EndState());
+	}
 	// Parse 'X' ScanCode and change to new Endstate
-	// Parse 1 key, and play first sfx
-	// Parse 2 key, and play second sfx
 }
 
 void GameState::Render()
@@ -287,12 +290,6 @@ void GameState::Render()
 	SDL_RenderCopyExF(engine_renderer, textures["player"], m_ship->GetSrc(), m_ship->GetDst(),
 		0, NULL, SDL_FLIP_NONE);
 
-	// If the current state in the vector is the game state
-	if (dynamic_cast<GameState*>(STMA::GetStates().back())) // If the pointer is a GameState (runtime)
-	{
-		State::Render();
-		
-	}
 }
 
 void GameState::Exit()
@@ -336,10 +333,82 @@ void GameState::Exit()
 		Mix_FreeChunk(soundFX.second);
 	}
 	m_sfx.clear(); // Finally, clearing out the map
+	Mix_HaltMusic();
+
 }
 
 void GameState::Resume()
 {
 	std::cout << "resuming gameState" << std::endl;
-	// resume music
+	Mix_ResumeMusic();
 }
+
+PauseState::PauseState() {}
+
+void PauseState::Enter()
+{
+	std::cout << "Entering PauseState" << std::endl;
+
+
+	// Making the window
+	m_pauseWindow = SDL_CreateWindow("PauseMenu", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, PAUSE_WIDTH, PAUSE_HEIGHT, NULL);
+	if (m_pauseWindow == nullptr)
+	{
+		std::cout << "Error during Pause Menu creation" << std::endl;
+	}
+	m_pauseRenderer = SDL_CreateRenderer(m_pauseWindow, -1, 0);
+	if (m_pauseRenderer == nullptr)
+	{
+		std::cout << "Error during Pause Renderer creation!" << std::endl;
+	}
+}
+
+void PauseState::Update()
+{
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
+	{
+		STMA::PopState();
+	}
+}
+
+void PauseState::Render()
+{
+	STMA::GetStates().front()->Render(); // Basically, renders the GameState as well that has not been booted out yet of the vector
+	SDL_SetRenderDrawBlendMode(m_pauseRenderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(m_pauseRenderer, 255, 0, 0, 0); // Making window transparent
+	SDL_RenderClear(m_pauseRenderer);
+}
+
+void PauseState::Exit()
+{
+	// Destroying renderer and window
+	SDL_DestroyRenderer(m_pauseRenderer);
+	SDL_DestroyWindow(m_pauseWindow);
+}
+
+EndState::EndState() {}
+
+void EndState::Enter()
+{
+}
+
+void EndState::Update()
+{
+	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
+	{
+		STMA::ChangeState(new TitleState);
+	}
+}
+
+void EndState::Render()
+{
+	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 255, 0, 255);
+	SDL_RenderClear(Engine::Instance().GetRenderer());
+}
+
+void EndState::Exit()
+{
+	std::cout << "Now exiting ExitState" << std::endl;
+}
+
+

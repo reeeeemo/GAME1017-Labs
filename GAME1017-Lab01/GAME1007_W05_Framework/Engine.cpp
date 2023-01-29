@@ -61,7 +61,7 @@ int Engine::Init(const char* title, const int xPos, const int yPos,
 		Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 2048);
 		Mix_AllocateChannels(16);
 		// Load background music
-		backgroundMusic.emplace("titleMusic", Mix_LoadMUS("../Assets/mus/bgMusic.mp3"));
+		backgroundMusic.emplace("titleMusic", Mix_LoadMUS("../Assets/mus/titleMusic.mp3"));
 		backgroundMusic.emplace("playMusic", Mix_LoadMUS("../Assets/mus/bgMusic.mp3"));
 
 		// Ensuring the background music has no errors

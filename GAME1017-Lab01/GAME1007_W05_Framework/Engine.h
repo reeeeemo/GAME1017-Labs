@@ -17,7 +17,8 @@ using namespace std;
 const int WIDTH = 1536;
 const int HEIGHT = 768;
 const int FPS = 120;
-
+const int PAUSE_WIDTH = 768;
+const int PAUSE_HEIGHT = 384;
 
 
 class Engine
