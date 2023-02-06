@@ -65,7 +65,7 @@ int Engine::Init()
 	TEMA::Init(); // Note that the TextureManager initializes SDL_image sublibrary.
 	STMA::ChangeState(new TitleState());
 	// Example-specific initialization.
-	
+
 	// Initialize rest of framework.
 	m_pKeystates = SDL_GetKeyboardState(nullptr);
 	m_fps = 1.0 / kFPS; // Converts FPS into a fraction of seconds.

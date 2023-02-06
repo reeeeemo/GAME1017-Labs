@@ -1,0 +1,7 @@
+<Root>
+    <TurretCount>4</TurretCount>
+    <Turret PosX="415" PosY="533"/>
+    <Turret PosX="160" PosY="232"/>
+    <Turret PosX="659" PosY="509"/>
+    <Turret PosX="229" PosY="405"/>
+</Root>
