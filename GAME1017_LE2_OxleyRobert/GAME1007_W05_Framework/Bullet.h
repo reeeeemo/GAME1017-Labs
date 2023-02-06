@@ -13,7 +13,7 @@ public:
 	Bullet(const SDL_FRect, const double, const double);
 	void Update();
 	void Render();
-	// bool deleteMe; // Flag that will let the program know, we can delete it.
+	bool deleteMe; // Flag that will let the program know, we can delete it.
 };
 
 #endif

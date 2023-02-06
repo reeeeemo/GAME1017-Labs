@@ -347,7 +347,7 @@ PauseState::PauseState() {}
 
 void PauseState::Enter()
 {
-	std::cout << "Entering PauseState" << std::endl;
+	std::cout << "Enhtering PauseState" << std::endl;
 
 
 	// Making the window

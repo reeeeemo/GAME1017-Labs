@@ -92,6 +92,12 @@ void GameState::Update()
 	for (unsigned i = 0; i < s_bullets.size(); i++)
 	{
 		s_bullets[i]->Update();
+
+		if (s_bullets[i]->deleteMe == true)
+		{
+			delete s_bullets[i];
+			s_bullets.shrink_to_fit();
+		}
 	}
 	// Cleanup bullets and enemies that go off screen.
 
