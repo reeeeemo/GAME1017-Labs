@@ -96,6 +96,8 @@ void GameState::Update()
 		if (s_bullets[i]->deleteMe == true)
 		{
 			delete s_bullets[i];
+			s_bullets[i] = nullptr;
+			s_bullets.erase(s_bullets.begin() + i);
 			s_bullets.shrink_to_fit();
 		}
 	}
