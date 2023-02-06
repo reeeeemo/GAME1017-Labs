@@ -3,9 +3,9 @@
 GameObject::GameObject(const SDL_FRect dst)
     :m_dst(dst){}
 
-SDL_FRect* GameObject::GetDst()
+SDL_FRect GameObject::GetDst()
 {
-    return &m_dst;
+    return m_dst;
 }
 
 SDL_FPoint GameObject::GetCenter() const

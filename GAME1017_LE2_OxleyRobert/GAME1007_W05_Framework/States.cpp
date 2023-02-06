@@ -88,11 +88,20 @@ void GameState::Update()
 	for (unsigned i = 0; i < s_enemies.size(); i++)
 	{
 		s_enemies[i]->Update();
+
+		if (s_enemies[i]->deleteMe == true)
+		{
+			delete s_enemies[i];
+			s_enemies[i] = nullptr;
+			s_enemies.erase(s_enemies.begin() + i);
+			s_enemies.shrink_to_fit();
+		}
 	}
 	for (unsigned i = 0; i < s_bullets.size(); i++)
 	{
 		s_bullets[i]->Update();
 
+		// Cleanup bullets if they are to be deleted.
 		if (s_bullets[i]->deleteMe == true)
 		{
 			delete s_bullets[i];
@@ -101,24 +110,28 @@ void GameState::Update()
 			s_bullets.shrink_to_fit();
 		}
 	}
-	// Cleanup bullets and enemies that go off screen.
-
-		// for all bullets
-			// if bullet goes off screen (four bounds checks)
-			// or
-			// if deleteMe of bullet is true
-				// delete s_bullets[i]
-				// set s_bullets[i] to nullptr
 	
 		// for all enemies, similar to above
 
 	// Check for collisions with bullets and enemies.
-	
-		// for all bullets
-			// for all enemies
-				// check collision (use AABB check with SDL_FRect and SDL_FRect)
-				// if (COMA::AABBCheck(/*SDL_FRect*/, /*SDL_FRect*/));
-					// Then colliding and do the thing
+	for (unsigned int i = 0; i < s_bullets.size(); i++)
+	{
+		for (unsigned int j = 0; j < s_enemies.size(); j++)
+		{
+			if (COMA::AABBCheck(s_bullets[i]->GetDst(),s_enemies[j]->GetDst()))
+			{
+				delete s_bullets[i];
+				s_bullets[i] = nullptr;
+				s_bullets.erase(s_bullets.begin() + i);
+				s_bullets.shrink_to_fit();
+
+				delete s_enemies[j];
+				s_enemies[j] = nullptr;
+				s_enemies.erase(s_enemies.begin() + j);
+				s_enemies.shrink_to_fit();
+			}
+		}
+	}
 }
 
 void GameState::Render()

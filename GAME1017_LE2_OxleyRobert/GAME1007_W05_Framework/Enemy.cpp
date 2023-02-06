@@ -12,6 +12,11 @@ Enemy::Enemy(const SDL_Rect src, const SDL_FRect dst):Sprite(src, dst)
 void Enemy::Update()
 {
 	m_dst.y += s_speed * (float)Engine::Instance().GetDeltaTime();
+
+	if (m_dst.y > kHeight) // If enemy has hit boundary
+	{
+		deleteMe = true;
+	}
 }
 
 void Enemy::Render()

@@ -6,7 +6,7 @@ class GameObject
 {
 public:
 	GameObject(const SDL_FRect);
-	SDL_FRect* GetDst();
+	SDL_FRect GetDst();
 	SDL_FPoint GetCenter() const;
 
 protected: // private but inherited.
