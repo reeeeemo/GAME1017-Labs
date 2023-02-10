@@ -49,8 +49,10 @@ void Turret::Update()
 		if (m_fireCtr == 0) // Is turret ready to fire?
 		{
 			SDL_FPoint normalVector = MAMA::Normalize(deltaVector);
-			GameState::Bullets().push_back(new Bullet({ turretCenter.x - 2.0f, turretCenter.y - 2.0f , 4.0f, 4.0f },
-				normalVector.x, normalVector.y));
+			Bullet* tempBullet = new Bullet({ turretCenter.x - 2.0f, turretCenter.y - 2.0f , 4.0f, 4.0f },
+				normalVector.x, normalVector.y);
+			tempBullet->startingTurret = this;
+			GameState::Bullets().push_back(tempBullet);
 			m_fireCtr = s_coolDown;
 		}
 	}

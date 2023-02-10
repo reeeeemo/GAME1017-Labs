@@ -87,10 +87,14 @@ void GameState::Enter()
 			}
 			float posX;
 			float posY;
+			int targetsDestroyed;
 			pElement->QueryFloatAttribute("PosX", &posX);
 			pElement->QueryFloatAttribute("PosY", &posY);
+			pElement->QueryIntAttribute("TargetsDestroyed", &targetsDestroyed);
 
-			m_turrets.push_back(new Turret({ 0, 0, 100, 100 }, { posX, posY, 100.0f, 100.0f }));
+			Turret* tempTurret = new Turret({ 0, 0, 100, 100 }, { posX, posY, 100.0f, 100.0f });
+			tempTurret->targetsDestroyed = targetsDestroyed;
+			m_turrets.push_back(tempTurret);
 
 			pElement = pElement->NextSiblingElement("Turret");
 
@@ -131,6 +135,10 @@ void GameState::Update()
 		{
 			if (COMA::AABBCheck(s_bullets[i]->GetDst(), s_enemies[j]->GetDst()))
 			{
+				// Add destroyed counter to turret
+				s_bullets[i]->startingTurret->targetsDestroyed++;
+
+				// Destroy bullets and enemies
 				delete s_bullets[i];
 				s_bullets[i] = nullptr;
 				s_bullets.erase(s_bullets.begin() + i);
@@ -151,6 +159,7 @@ void GameState::Update()
 
 		if (s_enemies[i]->deleteMe == true)
 		{
+			// Destroy enemies
 			delete s_enemies[i];
 			s_enemies[i] = nullptr;
 			s_enemies.erase(s_enemies.begin() + i);
@@ -213,7 +222,7 @@ void GameState::Exit()
 		pElement = gameDataDoc.NewElement("Turret");
 		pElement->SetAttribute("PosX", turret->GetDst().x);
 		pElement->SetAttribute("PosY", turret->GetDst().y);
-		// Add kill counter here
+		pElement->SetAttribute("DestroyCounter", turret->targetsDestroyed);
 		pRoot->InsertEndChild(pElement);
 	}
 

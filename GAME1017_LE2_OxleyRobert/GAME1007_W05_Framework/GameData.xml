@@ -1,20 +1,5 @@
 <Root>
-    <TurretCount>17</TurretCount>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="711" PosY="425"/>
-    <Turret PosX="106" PosY="189"/>
-    <Turret PosX="418" PosY="550"/>
-    <Turret PosX="194" PosY="387"/>
-    <Turret PosX="25" PosY="341"/>
+    <TurretCount>2</TurretCount>
+    <Turret PosX="217" PosY="149" DestroyCounter="-858993450"/>
+    <Turret PosX="637" PosY="110" DestroyCounter="-858993445"/>
 </Root>

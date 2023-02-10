@@ -2,6 +2,7 @@
 #define __BULLET_H__
 #include <SDL.h>
 #include "GameObject.h"
+#include "Turret.h"
 
 class Bullet : public GameObject
 {
@@ -14,6 +15,7 @@ public:
 	void Update();
 	void Render();
 	bool deleteMe; // Flag that will let the program know, we can delete it.
+	Turret* startingTurret;
 };
 
 #endif

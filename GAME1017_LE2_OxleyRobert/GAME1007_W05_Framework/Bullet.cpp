@@ -24,4 +24,5 @@ void Bullet::Render()
 	SDL_RenderFillRectF(REMA::Instance().GetRenderer(), &m_dst);
 }
 
+
 const float Bullet::s_speed = 300.0f;

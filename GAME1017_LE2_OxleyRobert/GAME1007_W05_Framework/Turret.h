@@ -9,7 +9,7 @@ public:
 	Turret(const SDL_Rect, const SDL_FRect);
 	void Update();
 	void Render();
-
+	int targetsDestroyed = 0;
 private:
 	double m_angle;
 	// Firing properties.
