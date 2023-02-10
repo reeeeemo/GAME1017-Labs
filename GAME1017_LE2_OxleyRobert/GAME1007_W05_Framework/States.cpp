@@ -129,7 +129,6 @@ void GameState::Update()
 	{
 		for (int j = 0; j < s_enemies.size(); j++)
 		{
-			std::cout << s_bullets.size() << "\n";
 			if (COMA::AABBCheck(s_bullets[i]->GetDst(), s_enemies[j]->GetDst()))
 			{
 				delete s_bullets[i];
