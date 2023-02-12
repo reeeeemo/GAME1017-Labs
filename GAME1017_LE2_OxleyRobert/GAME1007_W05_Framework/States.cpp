@@ -61,7 +61,7 @@ void GameState::Enter()
 	s_enemies.push_back(new Enemy({ 80,0,40,57 }, { 512.0f, -57.0f, 40.0f, 57.0f }));
 	// Create the DOM and load the XML file.
 	// Initializes XML Doc if it exists.
-	if (gameDataDoc.LoadFile("GameData.xml") == 0)
+	if (gameDataDoc.LoadFile("../Assets/dat/GameData.xml") == 0)
 	{
 		pRoot = gameDataDoc.FirstChild();
 		if (pRoot == nullptr) // Error checker in case root is not found
@@ -85,12 +85,12 @@ void GameState::Enter()
 			{
 				std::cout << tinyxml2::XML_ERROR_PARSING_ELEMENT << std::endl;
 			}
-			float posX;
-			float posY;
-			int targetsDestroyed;
+			float posX = 0.0f;
+			float posY = 0.0f;
+			int targetsDestroyed = 0;
 			pElement->QueryFloatAttribute("PosX", &posX);
 			pElement->QueryFloatAttribute("PosY", &posY);
-			pElement->QueryIntAttribute("TargetsDestroyed", &targetsDestroyed);
+			pElement->QueryIntAttribute("DestroyCounter", &targetsDestroyed);
 
 			Turret* tempTurret = new Turret({ 0, 0, 100, 100 }, { posX, posY, 100.0f, 100.0f });
 			tempTurret->targetsDestroyed = targetsDestroyed;
@@ -227,7 +227,7 @@ void GameState::Exit()
 	}
 
 	// Saving file.
-	gameDataDoc.SaveFile("GameData.xml");
+	gameDataDoc.SaveFile("../Assets/dat/GameData.xml");
 
 	ClearTurrets(); // Deallocate all turrets, then all other objects.
 	for (unsigned i = 0; i < s_enemies.size(); i++)

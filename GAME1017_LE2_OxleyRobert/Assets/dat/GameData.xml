@@ -1,0 +1,5 @@
+<Root>
+    <TurretCount>2</TurretCount>
+    <Turret PosX="279" PosY="516" DestroyCounter="1"/>
+    <Turret PosX="825" PosY="294" DestroyCounter="3"/>
+</Root>
