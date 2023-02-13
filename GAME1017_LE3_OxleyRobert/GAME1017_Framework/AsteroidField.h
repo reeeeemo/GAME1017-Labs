@@ -8,13 +8,14 @@
 class Asteroid : public Sprite
 {
 public:
-	Asteroid(SDL_Rect s, SDL_FRect d);
+	Asteroid(SDL_Rect s, SDL_FRect d, short size);
 	void Update();
 	void Render();
 	const SDL_FPoint& GetCenter() { return m_center; }
 	const double& GetRadius() { return m_radius; }
-	Uint8* GetColMods();
+	Uint8* GetColMods(); 
 	void SetColMods(Uint8 r, Uint8 g, Uint8 b);
+	void SetColMods(const Uint8* colorMods);
 	short GetSize();
 	void SetSize(short);
 	void UpdateDeltas(double);
@@ -36,6 +37,7 @@ public:
 	~AsteroidField();
 	void Update();
 	void Render();
+	void SplitAsteroid(Asteroid* previousAsteroid, double angle);
 	std::vector<Asteroid*>& GetAsteroids() { return m_asteroids; }
 	const unsigned int GetSize() { return m_size; }
 private:

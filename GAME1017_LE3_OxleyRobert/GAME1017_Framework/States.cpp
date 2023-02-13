@@ -198,7 +198,7 @@ void GameState::Update()
 	// Check collision.
 	Ship* ship = dynamic_cast<Ship*>(GetChild("ship"));
 
-	vector<Asteroid*>& field = dynamic_cast<AsteroidField*>(GetChild("field"))->GetAsteroids();
+	AsteroidField* field = dynamic_cast<AsteroidField*>(GetChild("field"));
 	// Collision of ship and asteroids.
 	
 	// Collision of bullets and asteroids.
@@ -206,14 +206,24 @@ void GameState::Update()
 	for (unsigned i = 0; i < bullets.size(); i++)
 	{
 		Bullet* bullet = bullets.at(i);
-		for (unsigned j = 0; j < field.size(); j++)
+		for (unsigned j = 0; j < field->GetAsteroids().size(); j++)
 		{
-			Asteroid* asteroid = field.at(j);
+			Asteroid* asteroid = field->GetAsteroids().at(j);
 			if (COMA::CircleCircleCheck(bullet->GetCenter(), asteroid->GetCenter(), bullet->GetRadius(), asteroid->GetRadius()))
 			{
 				SOMA::PlaySound("explode");
 				bullet->SetEnabled(false);
 				asteroid->SetEnabled(false);
+
+				if (asteroid->GetEnabled() == false)
+				{
+					// As long as the asteroid size is not 0.
+					if (asteroid->GetSize() != 0)
+					{
+						// Split asteroid, second variable is the angle determined by the bullet angle + random value between 30-45.
+						field->SplitAsteroid(asteroid, ((rand() % 15) + 30) + bullet->GetAngle());
+					}
+				}
 			}
 		}
 	}

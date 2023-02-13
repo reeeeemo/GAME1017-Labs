@@ -6,9 +6,23 @@
 #include "SoundManager.h"
 #include "TextureManager.h"
 
-Asteroid::Asteroid(SDL_Rect s, SDL_FRect d) : Sprite(s, d), 
-	m_angle(0.0), m_radius(33.0), m_size(2)
+Asteroid::Asteroid(SDL_Rect s, SDL_FRect d, short size) : Sprite(s, d), 
+	m_angle(0.0), m_radius(33.0), m_size(size)
 {
+	// Downsizes the asteroid based on what type of asteroid it is.
+	if (m_size == 1)
+	{
+		m_dst.w *= 0.66f;
+		m_dst.h *= 0.66f;
+		m_radius *= 0.66;
+		
+	} else if (m_size == 0)
+	{
+		m_dst.w *= 0.33f;
+		m_dst.h *= 0.33f;
+		m_radius *= 0.33;
+	} 
+
 	m_center = { (m_dst.x + m_dst.w / 2.0f), (m_dst.y + m_dst.h / 2.0f) };
 	m_rotSpeed = (1.0 + rand() % 5) * (rand() % 2 * 2.0 - 1.0); // -1 or 1
 	MAMA::SetDeltas(MAMA::Deg2Rad((rand() % 360) - 90.0), m_dx, m_dy, 2.0f, 2.0f);
@@ -49,6 +63,14 @@ void Asteroid::SetColMods(Uint8 r, Uint8 g, Uint8 b)
 	m_rMod = r; m_gMod = g; m_bMod = b;
 }
 
+void Asteroid::SetColMods(const Uint8* colorMods)
+{
+	m_rMod = colorMods[0];
+	m_gMod = colorMods[1];
+	m_bMod = colorMods[2];
+}
+
+
 short Asteroid::GetSize()
 {
 	return m_size;
@@ -70,7 +92,7 @@ AsteroidField::AsteroidField(unsigned int sz) :GameObject({ 0,0,0,0 }), m_size(s
 	{
 		m_asteroids.push_back(new Asteroid({ 539, 0, 61, 66 },
 			{ 25.0f + rand() % 901, (i % 2 == 0 ? 25.0f : 600.0f) + (rand() % 76), 
-			61.0f, 66.0f }));
+			61.0f, 66.0f }, 2));
 		m_asteroids.back()->SetColMods((rand() % 129), (rand() % 129), (rand() % 129));
 	}
 	m_asteroids.shrink_to_fit();
@@ -107,3 +129,22 @@ void AsteroidField::Render()
 	for (const auto a : m_asteroids)
 		a->Render();
 }
+
+void AsteroidField::SplitAsteroid(Asteroid* previousAsteroid, double angle)
+{
+	// Left Asteroid
+	 Asteroid* temp = new Asteroid({ 539, 0, 61, 66 },
+		{previousAsteroid->GetCenter().x - 20.0f, previousAsteroid->GetCenter().y, 61.0f, 66.0f }, previousAsteroid->GetSize() - 1);
+	 temp->SetColMods(previousAsteroid->GetColMods());
+	 temp->UpdateDeltas(-angle);
+	 m_asteroids.push_back(temp);
+
+	// Right Asteroid
+	temp = new Asteroid({ 539, 0, 61, 66 },
+		{ previousAsteroid->GetCenter().x + 20.0f, previousAsteroid->GetCenter().y, 61.0f, 66.0f }, previousAsteroid->GetSize() - 1);
+	temp->SetColMods(previousAsteroid->GetColMods());
+	temp->UpdateDeltas(angle);
+	m_asteroids.push_back(temp);
+}
+
+
