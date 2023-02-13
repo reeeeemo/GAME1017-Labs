@@ -58,13 +58,13 @@ void Ship::Update()
 		}
 		break;
 	case STATE_MOVING:
-		m_dx = cos(MAMA::Deg2Rad(m_angle - 90.0));
-		m_dy = sin(MAMA::Deg2Rad(m_angle - 90.0));
+		m_dx = cos(MAMA::Deg2Rad(m_angle - 90));
+		m_dy = sin(MAMA::Deg2Rad(m_angle - 90));
 		// Update velocities
 		m_velX += (m_dx * m_thrust);
-		m_velY += (m_dx * m_thrust);
-		m_velX = min(max(m_velX,-(m_velMax * fabs(m_dx))), -(m_velMax * fabs(m_dx)));
-		m_velY = min(max(m_velY, -(m_velMax * fabs(m_dy))), -(m_velMax * fabs(m_dy)));
+		m_velY += (m_dy * m_thrust);
+		m_velX = min(max(m_velX,-(m_velMax * fabs(m_dx))), (m_velMax * fabs(m_dx)));
+		m_velY = min(max(m_velY, -(m_velMax * fabs(m_dy))), (m_velMax * fabs(m_dy)));
 		// If both movement keys are released
 		if (EVMA::KeyReleased(SDL_SCANCODE_W) && EVMA::KeyReleased(SDL_SCANCODE_SPACE)) // Transition check to moving
 		{
@@ -74,11 +74,27 @@ void Ship::Update()
 		break;
 	}
 	// Apply drag and finish movement.
-	
+	m_velX *= 0.975;
+	m_velY *= 0.975;
+	m_center.x += (float)m_velX;
+	m_center.y += (float)m_velY;
 	// Wrap on screen.
-	
+	if (m_center.x < -m_dst.w / 2) {
+		m_center.x = kWidth + m_dst.w / 2;
+	}
+	else if (m_center.x > kWidth + m_dst.w / 2) {
+		m_center.x = 0 - m_dst.w / 2;
+	}
+
+	if (m_center.y < -m_dst.h / 2) {
+		m_center.y = kHeight + m_dst.h / 2;
+	}
+	else if (m_center.y > kHeight + m_dst.h / 2) {
+		m_center.y = 0 - m_dst.h / 2;
+	}
 	// Update dest rectangle.
-	
+	m_dst.x = m_center.x - m_dst.w / 2;
+	m_dst.y = m_center.y - m_dst.h / 2;
 	// Invoke the animation.
 	Animate();
 }
