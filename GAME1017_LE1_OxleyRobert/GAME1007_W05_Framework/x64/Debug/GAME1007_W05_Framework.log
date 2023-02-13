@@ -1,0 +1,15 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(514,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (GAME1007_W05_Framework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Bullet.cpp
+C:\GAME1017-Labs\GAME1007_LE1_OxleyRobert\GAME1007_W05_Framework\Bullet.cpp(17,28): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Enemy.cpp
+C:\GAME1017-Labs\GAME1007_LE1_OxleyRobert\GAME1007_W05_Framework\Enemy.cpp(11,12): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\GAME1017-Labs\GAME1007_LE1_OxleyRobert\GAME1007_W05_Framework\Enemy.cpp(16,29): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  Engine.cpp
+  Main.cpp
+  Player.cpp
+  State.cpp
+C:\GAME1017-Labs\GAME1007_LE1_OxleyRobert\GAME1007_W05_Framework\State.cpp(99,28): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\GAME1017-Labs\GAME1007_LE1_OxleyRobert\GAME1007_W05_Framework\State.cpp(100,28): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  StateManager.cpp
+  Generating Code...
+  GAME1007_W05_Framework.vcxproj -> C:\GAME1017-Labs\GAME1007_LE1_OxleyRobert\Bin\x64\Debug\GAME1007_M2_Oxley.exe
