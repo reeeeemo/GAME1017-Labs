@@ -63,13 +63,6 @@ void Asteroid::SetColMods(Uint8 r, Uint8 g, Uint8 b)
 	m_rMod = r; m_gMod = g; m_bMod = b;
 }
 
-void Asteroid::SetColMods(const Uint8* colorMods)
-{
-	m_rMod = colorMods[0];
-	m_gMod = colorMods[1];
-	m_bMod = colorMods[2];
-}
-
 
 short Asteroid::GetSize()
 {
@@ -135,14 +128,14 @@ void AsteroidField::SplitAsteroid(Asteroid* previousAsteroid, double angle)
 	// Left Asteroid
 	 Asteroid* temp = new Asteroid({ 539, 0, 61, 66 },
 		{previousAsteroid->GetCenter().x - 20.0f, previousAsteroid->GetCenter().y, 61.0f, 66.0f }, previousAsteroid->GetSize() - 1);
-	 temp->SetColMods(previousAsteroid->GetColMods());
+	 temp->SetColMods(previousAsteroid->GetColMods()[0], previousAsteroid->GetColMods()[1], previousAsteroid->GetColMods()[2]);
 	 temp->UpdateDeltas(-angle);
 	 m_asteroids.push_back(temp);
 
 	// Right Asteroid
 	temp = new Asteroid({ 539, 0, 61, 66 },
 		{ previousAsteroid->GetCenter().x + 20.0f, previousAsteroid->GetCenter().y, 61.0f, 66.0f }, previousAsteroid->GetSize() - 1);
-	temp->SetColMods(previousAsteroid->GetColMods());
+	temp->SetColMods(previousAsteroid->GetColMods()[0], previousAsteroid->GetColMods()[1], previousAsteroid->GetColMods()[2]);
 	temp->UpdateDeltas(angle);
 	m_asteroids.push_back(temp);
 }

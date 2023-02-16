@@ -15,7 +15,6 @@ public:
 	const double& GetRadius() { return m_radius; }
 	Uint8* GetColMods(); 
 	void SetColMods(Uint8 r, Uint8 g, Uint8 b);
-	void SetColMods(const Uint8* colorMods);
 	short GetSize();
 	void SetSize(short);
 	void UpdateDeltas(double);
