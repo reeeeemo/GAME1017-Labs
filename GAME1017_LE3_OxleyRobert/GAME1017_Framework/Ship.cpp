@@ -114,4 +114,30 @@ void Ship::TeleportShip()
 	//		  Search for a new center point, doing a collision check with asteroids with a wider radius
 	//		  If you've found a clear center point, move the ship there
 	AsteroidField* field = dynamic_cast<AsteroidField*>(STMA::CurrentState()->GetChild("field"));
+	bool playerCollidedAsteroid = true;
+	do
+	{
+		// Placing spaceship on a random space WITHIN the screen.
+		m_center.x = (rand() % kWidth) - m_dst.w;
+		m_center.y = (rand() % kHeight) - m_dst.h;
+		if (m_center.x < 0)
+		{
+			m_center.x += m_dst.w;
+		}
+		if (m_center.y < 0)
+		{
+			m_center.y += m_dst.h;
+		}
+
+		for (Asteroid* asteroid : field->GetAsteroids())
+		{
+			playerCollidedAsteroid = COMA::CircleCircleCheck(GetCenter(), asteroid->GetCenter(), GetRadius(), asteroid->GetRadius());
+			if (!playerCollidedAsteroid)
+			{
+				m_dst.x = m_center.x - m_dst.w / 2;
+				m_dst.y = m_center.y - m_dst.h / 2;
+				break;
+			}
+		}
+	} while (playerCollidedAsteroid);
 }

@@ -1,0 +1,6 @@
+﻿  TiledLevel.cpp
+C:\GAME1017-Labs\GAME1017_LE4_OxleyRobert\GAME1017_Framework\TiledLevel.cpp(37,29): warning C4018: '<': signed/unsigned mismatch
+C:\GAME1017-Labs\GAME1017_LE4_OxleyRobert\GAME1017_Framework\TiledLevel.cpp(40,30): warning C4018: '<': signed/unsigned mismatch
+C:\GAME1017-Labs\GAME1017_LE4_OxleyRobert\GAME1017_Framework\TiledLevel.cpp(65,29): warning C4018: '<': signed/unsigned mismatch
+C:\GAME1017-Labs\GAME1017_LE4_OxleyRobert\GAME1017_Framework\TiledLevel.cpp(67,30): warning C4018: '<': signed/unsigned mismatch
+  GAME1017_Framework.vcxproj -> C:\GAME1017-Labs\GAME1017_LE4_OxleyRobert\Bin\GAME1017_Framework.exe

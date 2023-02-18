@@ -224,6 +224,7 @@ void GameState::Update()
 						field->SplitAsteroid(asteroid, ((rand() % 15) + 30) + bullet->GetAngle());
 					}
 				}
+				break;
 			}
 		}
 	}

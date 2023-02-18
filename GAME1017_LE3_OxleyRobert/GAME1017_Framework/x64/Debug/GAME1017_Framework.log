@@ -1,4 +1,2 @@
-﻿  AsteroidField.cpp
-C:\GAME1017-Labs\GAME1017_LE3_OxleyRobert\GAME1017_Framework\AsteroidField.cpp(58): warning C4172: returning address of local variable or temporary: mods
-  LINK : C:\GAME1017-Labs\GAME1017_LE3_OxleyRobert\\Bin\GAME1017_Framework.exe not found or not built by the last incremental link; performing full link
+﻿  Ship.cpp
   GAME1017_Framework.vcxproj -> C:\GAME1017-Labs\GAME1017_LE3_OxleyRobert\Bin\GAME1017_Framework.exe
