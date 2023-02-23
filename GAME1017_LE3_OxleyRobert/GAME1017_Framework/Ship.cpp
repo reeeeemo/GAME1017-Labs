@@ -56,8 +56,22 @@ void Ship::Update()
 			SetAnimation(STATE_MOVING, 2, 0, 4);
 			SOMA::PlaySound("engines", -1, 15); // Reserving sound loop on channel 15.
 		}
+		m_velX -= 0.001f;
+		m_velY -= 0.001f;
+
+
+		if (m_velX < 0 || m_velY < 0)
+		{
+			m_velX = 0;
+			m_velY = 0;
+		}
 		break;
 	case STATE_MOVING:
+		if (EVMA::KeyReleased(SDL_SCANCODE_W) || EVMA::KeyReleased(SDL_SCANCODE_SPACE)) // Transition check to moving
+		{
+			SetAnimation(STATE_IDLING, 1, 0, 1);
+			SOMA::StopSound(15);
+		}
 		m_dx = cos(MAMA::Deg2Rad(m_angle - 90));
 		m_dy = sin(MAMA::Deg2Rad(m_angle - 90));
 		// Update velocities
@@ -66,11 +80,6 @@ void Ship::Update()
 		m_velX = min(max(m_velX,-(m_velMax * fabs(m_dx))), (m_velMax * fabs(m_dx)));
 		m_velY = min(max(m_velY, -(m_velMax * fabs(m_dy))), (m_velMax * fabs(m_dy)));
 		// If both movement keys are released
-		if (EVMA::KeyReleased(SDL_SCANCODE_W) && EVMA::KeyReleased(SDL_SCANCODE_SPACE)) // Transition check to moving
-		{
-			SetAnimation(STATE_IDLING, 1, 0, 1);
-			SOMA::StopSound(15);
-		}
 		break;
 	}
 	// Apply drag and finish movement.
@@ -114,21 +123,21 @@ void Ship::TeleportShip()
 	//		  Search for a new center point, doing a collision check with asteroids with a wider radius
 	//		  If you've found a clear center point, move the ship there
 	AsteroidField* field = dynamic_cast<AsteroidField*>(STMA::CurrentState()->GetChild("field"));
+	SDL_FPoint new_dst_center;
 	bool playerCollidedAsteroid = true;
-	do
+	do // While asteroid and player is colliding 
 	{
-
-		SDL_FPoint new_dst_center = { (rand() % kWidth) - m_dst.w, (rand() % kHeight) - m_dst.h };
+		new_dst_center = { (rand() % kWidth) - m_dst.w * 0.5f, (rand() % kHeight) - m_dst.h * 0.5f }; // New spawn point!s
 
 		for (Asteroid* asteroid : field->GetAsteroids())
 		{
-			std::cout << "x: " << new_dst_center.x << " " << "y: " << new_dst_center.y << std::endl;
 			playerCollidedAsteroid = COMA::CircleCircleCheck(new_dst_center, asteroid->GetCenter(), GetRadius()*2.0f, asteroid->GetRadius());
 			if (playerCollidedAsteroid == false) 
 			{
-				m_center = new_dst_center;
-				break;
+				break; // Found an empty spot, let's blow this popsicle stand!
 			}
 		}
 	} while (playerCollidedAsteroid);
+
+	m_center = new_dst_center;
 }
