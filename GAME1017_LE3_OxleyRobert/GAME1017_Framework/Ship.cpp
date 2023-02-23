@@ -117,25 +117,16 @@ void Ship::TeleportShip()
 	bool playerCollidedAsteroid = true;
 	do
 	{
-		// Placing spaceship on a random space WITHIN the screen.
-		m_center.x = (rand() % kWidth) - m_dst.w;
-		m_center.y = (rand() % kHeight) - m_dst.h;
-		if (m_center.x < 0)
-		{
-			m_center.x += m_dst.w;
-		}
-		if (m_center.y < 0)
-		{
-			m_center.y += m_dst.h;
-		}
+
+		SDL_FPoint new_dst_center = { (rand() % kWidth) - m_dst.w, (rand() % kHeight) - m_dst.h };
 
 		for (Asteroid* asteroid : field->GetAsteroids())
 		{
-			playerCollidedAsteroid = COMA::CircleCircleCheck(GetCenter(), asteroid->GetCenter(), GetRadius(), asteroid->GetRadius());
-			if (!playerCollidedAsteroid)
+			std::cout << "x: " << new_dst_center.x << " " << "y: " << new_dst_center.y << std::endl;
+			playerCollidedAsteroid = COMA::CircleCircleCheck(new_dst_center, asteroid->GetCenter(), GetRadius()*2.0f, asteroid->GetRadius());
+			if (playerCollidedAsteroid == false) 
 			{
-				m_dst.x = m_center.x - m_dst.w / 2;
-				m_dst.y = m_center.y - m_dst.h / 2;
+				m_center = new_dst_center;
 				break;
 			}
 		}
