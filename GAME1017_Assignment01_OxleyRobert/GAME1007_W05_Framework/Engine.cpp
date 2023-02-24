@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include "StateManager.h"
+#include "Button.h"
 
 using namespace std;
 
@@ -84,6 +85,8 @@ int Engine::Init(const char* title, const int xPos, const int yPos,
 	lastFrameTime = chrono::high_resolution_clock::now();
 	m_isRunning = true; // Start your engine.
 
+	CButton::Init();
+
 	STMA::ChangeState(new TitleState());
 	return 0;
 }
@@ -103,6 +106,10 @@ void Engine::HandleEvents()
 			// Keeping this here in case needed to revert
 			// if (event.key.keysym.scancode == SDL_SCANCODE_SPACE) {
 			//
+			break;
+		case SDL_MOUSEMOTION:
+			m_mousePosition.x = static_cast<float>(event.motion.x);
+			m_mousePosition.y = static_cast<float>(event.motion.y);
 			break;
 		}
 	}

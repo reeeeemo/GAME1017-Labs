@@ -3,6 +3,7 @@
 #define __STATEMANAGER_H__
 
 #include "State.h"
+#include "Button.h"
 #include <vector>
 #include <iostream>
 

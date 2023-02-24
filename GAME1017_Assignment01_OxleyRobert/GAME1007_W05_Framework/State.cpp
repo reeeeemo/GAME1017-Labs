@@ -17,6 +17,7 @@ void TitleState::Enter()
 	Mix_VolumeMusic(36);
 
 	Mix_PlayMusic(Engine::backgroundMusic["titleMusic"], -1);
+	CButton::SetPosition(512, 128);
 }
 
 void TitleState::Update()

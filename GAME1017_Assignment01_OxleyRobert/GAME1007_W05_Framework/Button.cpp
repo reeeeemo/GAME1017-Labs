@@ -7,8 +7,8 @@
 
 std::array<CButton*, CButton::NUM_BUTTONS> CButton::s_buttons;
 std::array<SDL_Texture*, CButton::NUM_BUTTONS> CButton::s_buttonTextures;
-CButton* s_currentButton = nullptr;
-
+CButton* CButton::s_currentButton = nullptr;
+SDL_Texture* CButton::s_currentTexture = nullptr;
 
 void CButton::Init()
 {
@@ -16,16 +16,35 @@ void CButton::Init()
 	s_buttons[START] = new CStartButton;
 	s_buttons[PAUSE] = new CPauseButton;
 	s_buttons[END] = new CEndButton;
-	s_buttonTextures[START] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "");
+	s_buttonTextures[START] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "../Assets/img/startButton.png");
 	s_buttonTextures[PAUSE] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "");
 	s_buttonTextures[END] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "");
 
+	// Error checker for textures.
+	for (SDL_Texture* texture: s_buttonTextures) {
+		if (texture == nullptr) {
+			std::cout << SDL_GetError() << std::endl;
+		}
+	}
+
 	// Start button is enabled by default.
 	s_currentButton = s_buttons[START];
+	s_currentTexture = s_buttonTextures[START];
+	std::cout << s_currentButton << std::endl;
+	std::cout << s_currentTexture << std::endl;
+	SetEnabled(true);
 }
 
 void CButton::Update()
 {
+	// If there is no button to render OR the button in question is not enabled.
+	if (!s_currentButton->isEnabled) { return; }
+
+	if (IsMouseOver) {
+		std::cout << "Button Pos: " << s_currentButton->m_dst.x << " " << s_currentButton->m_dst.y << std::endl;
+		std::cout << "Mouse Pos: " << Engine::Instance().m_mousePosition.x << " " << Engine::Instance().m_mousePosition.y << std::endl;
+	}
+
 	if (s_currentButton->isActive)
 	{
 		s_currentButton->m_alpha = 127;
@@ -37,11 +56,70 @@ void CButton::Update()
 
 void CButton::Render()
 {
-	s_currentButton->Render();
+	// If there is no button to render OR the button in question is not enabled.
+	if (!s_currentButton->isEnabled) { return; }
+
+	// If there is a button, render it!
+	SDL_Rect src_rect{};
+	SDL_Rect dst_rect{};
+
+	int texture_width;
+	int texture_height;
+
+	SDL_QueryTexture(s_currentTexture, nullptr, nullptr, &texture_width, &texture_height);
+
+	// Grabbing values from the QueryTexture
+	src_rect.w = dst_rect.w = texture_width;
+	src_rect.h = dst_rect.h = texture_height;
+
+	// Centering Button
+	const int x_offset = static_cast<int>(texture_width * 0.5);
+	const int y_offset = static_cast<int>(texture_height * 0.5);
+
+
+	dst_rect.x = s_currentButton->m_dst.x - x_offset;
+	dst_rect.y = s_currentButton->m_dst.y - y_offset;
+
+	s_currentButton->m_dst.w = src_rect.w;
+	s_currentButton->m_dst.h = src_rect.h;
+
+	
+	// For when button is pressed
+	SDL_SetTextureAlphaMod(s_currentTexture, s_currentButton->m_alpha);
+	SDL_RenderCopyEx(Engine::Instance().GetRenderer(), s_currentTexture, &src_rect, &dst_rect, 0, nullptr, SDL_FLIP_NONE);
+
+}
+
+void CButton::Exit()
+{
 }
 
 void CButton::SetPosition(int x, int y)
 {
-	s_currentButton->position = { x, y };
+	s_currentButton->m_dst = { x, y, s_currentButton->m_dst.w, s_currentButton->m_dst.h };
+}
+
+void CButton::SetEnabled(bool enabled)
+{
+	s_currentButton->isEnabled = enabled;
+}
+
+bool CButton::IsMouseOver() {
+	/* Is the mouse position:
+	* - Greater than button.x
+	* - Less than button.x + button.w
+	* - Greater than button.y
+	* - Less than button.y + button.h
+	*/
+	SDL_FPoint temp_mouse_pos = Engine::Instance().m_mousePosition;
+	SDL_Rect temp_button_pos = s_currentButton->m_dst;
+	if (static_cast<int>(temp_mouse_pos.x) > temp_button_pos.x &&
+		static_cast<int>(temp_mouse_pos.x) < temp_button_pos.x + temp_button_pos.w &&
+		static_cast<int>(temp_mouse_pos.y) > temp_button_pos.y &&
+		static_cast<int>(temp_mouse_pos.y) < temp_button_pos.y + temp_button_pos.h) 
+	{
+		return true;
+	}
+	return false;
 }
 

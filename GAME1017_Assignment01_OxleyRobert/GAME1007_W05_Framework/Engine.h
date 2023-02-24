@@ -32,6 +32,8 @@ public: // Put public heading first so you ALWAYS question why things are public
 	bool KeyDown(SDL_Scancode);
 	double GetDeltaTime();
 
+	// Yes I know this is not the greatest, but I don't want unneccesary accessors and not keen on creating an EventManager component at the moment.
+	SDL_FPoint m_mousePosition;
 private:
 	Engine();
 	// For fixed timestep.

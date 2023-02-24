@@ -7,10 +7,8 @@
 class CEndButton : public CButton
 {
 public:
-	void Render() override;
 private:
 	void OnEnter() override;
-	void OnExit() override;
 	void Execute() override;
 };
 

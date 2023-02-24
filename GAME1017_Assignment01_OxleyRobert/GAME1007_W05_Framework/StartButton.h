@@ -7,10 +7,9 @@
 class CStartButton : public CButton
 {
 public:
-	void Render() override;
+	CStartButton() = default;
 private:
 	void OnEnter() override;
-	void OnExit() override;
 	void Execute() override;
 };
 

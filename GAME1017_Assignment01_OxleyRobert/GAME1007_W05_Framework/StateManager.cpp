@@ -5,6 +5,7 @@ void StateManager::Update()
 	if (!s_states.empty()) // If the state vector is NOT empty. (always)
 	{
 		s_states.back()->Update(); // Invokes the Update of the "current state"
+		CButton::Update();
 	}
 }
 
@@ -13,6 +14,7 @@ void StateManager::Render()
 	if (!s_states.empty())
 	{
 		s_states.back()->Render();
+		CButton::Render();
 	}
 }
 
@@ -58,6 +60,7 @@ void StateManager::Quit()
 		s_states.back() = nullptr;
 		s_states.pop_back();
 	}
+	CButton::Exit();
 }
 
 std::vector<State*>& StateManager::GetStates()
