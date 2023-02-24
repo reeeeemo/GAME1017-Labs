@@ -142,18 +142,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="EndButton.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PauseButton.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="StartButton.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="EndButton.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="PauseButton.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="StartButton.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateManager.h" />
   </ItemGroup>

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Buttons">
+      <UniqueIdentifier>{d49c8b1d-ca98-4a7e-b372-73c799aa97ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -36,6 +39,18 @@
     <ClCompile Include="State.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="StartButton.cpp">
+      <Filter>Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseButton.cpp">
+      <Filter>Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="EndButton.cpp">
+      <Filter>Buttons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -55,6 +70,18 @@
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="StartButton.h">
+      <Filter>Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseButton.h">
+      <Filter>Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="EndButton.h">
+      <Filter>Buttons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

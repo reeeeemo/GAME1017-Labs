@@ -16,7 +16,7 @@ int Engine::Run()
 	{
 		return 1; // 1 arbitrarily means that engine is already running.
 	}
-	if (Init("GAME1017_L1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, NULL))
+	if (Init("GAME1017_A1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, NULL))
 	{
 		return 2; // 2 arbitrarily means that something went wrong in init.
 	}

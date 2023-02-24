@@ -370,7 +370,7 @@ void PauseState::Render()
 	STMA::GetStates().front()->Render(); // Basically, renders the GameState as well that has not been booted out yet of the vector
 	SDL_SetRenderDrawBlendMode(Engine::Instance().GetRenderer(), SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 255, 0, 0, 128); // Making window transparent
-	SDL_Rect pause_rect = { (WIDTH / 2), (HEIGHT / 2), 512, 512 };
+	SDL_Rect pause_rect = { 512, 128, 512, 512 };
 	SDL_RenderFillRect(Engine::Instance().GetRenderer(), &pause_rect);
 }
 
