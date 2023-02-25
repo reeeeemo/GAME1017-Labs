@@ -8,6 +8,14 @@
 #include <SDL_render.h>
 #include "StateManager.h"
 
+enum EButtons
+{
+	START,
+	PAUSE,
+	END,
+	NUM_BUTTONS
+};
+
 class CButton
 {
 public:
@@ -24,19 +32,14 @@ public:
 	static void SetEnabled(bool enabled);
 
 	static bool IsMouseOver();
+	static void ChangeButton(EButtons button);
 
 protected:
 
 	virtual void OnEnter() = 0;
 	virtual void Execute() = 0;
 
-	enum EButtons
-	{
-		START,
-		PAUSE,
-		END,
-		NUM_BUTTONS
-	};
+
 
 	std::string m_key;
 	Uint8 m_alpha;

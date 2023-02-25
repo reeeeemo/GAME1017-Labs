@@ -5,8 +5,8 @@
 #include "EndButton.h"
 
 
-std::array<CButton*, CButton::NUM_BUTTONS> CButton::s_buttons;
-std::array<SDL_Texture*, CButton::NUM_BUTTONS> CButton::s_buttonTextures;
+std::array<CButton*, NUM_BUTTONS> CButton::s_buttons;
+std::array<SDL_Texture*, NUM_BUTTONS> CButton::s_buttonTextures;
 CButton* CButton::s_currentButton = nullptr;
 SDL_Texture* CButton::s_currentTexture = nullptr;
 
@@ -16,9 +16,9 @@ void CButton::Init()
 	s_buttons[START] = new CStartButton;
 	s_buttons[PAUSE] = new CPauseButton;
 	s_buttons[END] = new CEndButton;
-	s_buttonTextures[START] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "../Assets/img/startButton.png");
-	s_buttonTextures[PAUSE] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "");
-	s_buttonTextures[END] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "");
+	s_buttonTextures[START] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "../Assets/img/Play.png");
+	s_buttonTextures[PAUSE] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "../Assets/img/Resume.png");
+	s_buttonTextures[END] = IMG_LoadTexture(Engine::Instance().GetRenderer(), "../Assets/img/Menu.png");
 
 	// Error checker for textures.
 	for (SDL_Texture* texture: s_buttonTextures) {
@@ -39,15 +39,23 @@ void CButton::Update()
 {
 	// If there is no button to render OR the button in question is not enabled.
 	if (!s_currentButton->isEnabled) { return; }
+	int mouseX = static_cast<int>(Engine::Instance().m_mousePosition.x);
+	int mouseY = static_cast<int>(Engine::Instance().m_mousePosition.y);
 
-	if (IsMouseOver) {
-		std::cout << "Button Pos: " << s_currentButton->m_dst.x << " " << s_currentButton->m_dst.y << std::endl;
-		std::cout << "Mouse Pos: " << Engine::Instance().m_mousePosition.x << " " << Engine::Instance().m_mousePosition.y << std::endl;
+
+	if (SDL_GetMouseState(&mouseX, &mouseY) == 1) // If left click is pressed
+	{
+		if (IsMouseOver())
+		{
+			s_currentButton->isActive = true;
+		}
 	}
 
 	if (s_currentButton->isActive)
 	{
 		s_currentButton->m_alpha = 127;
+		s_currentButton->Execute();
+		s_currentButton->isActive = false;
 	} else
 	{
 		s_currentButton->m_alpha = 255;
@@ -72,13 +80,9 @@ void CButton::Render()
 	src_rect.w = dst_rect.w = texture_width;
 	src_rect.h = dst_rect.h = texture_height;
 
-	// Centering Button
-	const int x_offset = static_cast<int>(texture_width * 0.5);
-	const int y_offset = static_cast<int>(texture_height * 0.5);
 
-
-	dst_rect.x = s_currentButton->m_dst.x - x_offset;
-	dst_rect.y = s_currentButton->m_dst.y - y_offset;
+	dst_rect.x = s_currentButton->m_dst.x;
+	dst_rect.y = s_currentButton->m_dst.y;
 
 	s_currentButton->m_dst.w = src_rect.w;
 	s_currentButton->m_dst.h = src_rect.h;
@@ -113,13 +117,20 @@ bool CButton::IsMouseOver() {
 	*/
 	SDL_FPoint temp_mouse_pos = Engine::Instance().m_mousePosition;
 	SDL_Rect temp_button_pos = s_currentButton->m_dst;
-	if (static_cast<int>(temp_mouse_pos.x) > temp_button_pos.x &&
-		static_cast<int>(temp_mouse_pos.x) < temp_button_pos.x + temp_button_pos.w &&
-		static_cast<int>(temp_mouse_pos.y) > temp_button_pos.y &&
-		static_cast<int>(temp_mouse_pos.y) < temp_button_pos.y + temp_button_pos.h) 
+	if (static_cast<int>(temp_mouse_pos.x) >= temp_button_pos.x &&
+		static_cast<int>(temp_mouse_pos.x) <= temp_button_pos.x + temp_button_pos.w &&
+		static_cast<int>(temp_mouse_pos.y) >= temp_button_pos.y &&
+		static_cast<int>(temp_mouse_pos.y) <= temp_button_pos.y + temp_button_pos.h) 
 	{
 		return true;
 	}
 	return false;
+}
+
+void CButton::ChangeButton(EButtons button)
+{
+	s_currentButton = s_buttons[button];
+	s_currentButton->isActive = false;
+	s_currentButton->OnEnter();
 }
 

@@ -33,6 +33,8 @@ public:
 	virtual void Exit();
 private:
 	// Map for music track goes here
+	SDL_Texture* m_background;
+	SDL_FRect m_bg1 = { 0.0f, 0.0f, WIDTH, HEIGHT };
 };
 
 class GameState : public State

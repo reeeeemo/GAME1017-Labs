@@ -14,10 +14,13 @@ void TitleState::Enter()
 {
 	std::cout << "Entering TitleState!" << std::endl;
 
-	Mix_VolumeMusic(36);
+	Mix_VolumeMusic(50);
 
 	Mix_PlayMusic(Engine::backgroundMusic["titleMusic"], -1);
 	CButton::SetPosition(512, 128);
+	CButton::SetEnabled(true);
+
+	m_background = IMG_LoadTexture(Engine::Instance().GetRenderer(), "../Assets/img/menuBackground.jpg");
 }
 
 void TitleState::Update()
@@ -34,7 +37,8 @@ void TitleState::Render()
 	SDL_SetRenderDrawColor(Engine::Instance().GetRenderer(), 0, 0, 255, 255);
 	SDL_RenderClear(Engine::Instance().GetRenderer());
 
-	// Any unique rendering in TitleState goes here ...
+	SDL_RenderCopyF(Engine::Instance().GetRenderer(), m_background, NULL, &m_bg1);
+
 }
 
 void TitleState::Exit()
@@ -356,6 +360,7 @@ PauseState::PauseState() {}
 void PauseState::Enter()
 {
 	std::cout << "Entering PauseState" << std::endl;
+	CButton::SetPosition(615, 500);
 }
 
 void PauseState::Update()
@@ -363,6 +368,10 @@ void PauseState::Update()
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
 	{
 		STMA::PopState();
+		CButton::SetEnabled(false);
+	} else
+	{
+		CButton::SetEnabled(true);
 	}
 }
 
@@ -383,13 +392,16 @@ EndState::EndState() {}
 
 void EndState::Enter()
 {
+	CButton::ChangeButton(END);
+	CButton::SetPosition(500, 500);
+	CButton::SetEnabled(true);
 }
 
 void EndState::Update()
 {
 	if (Engine::Instance().KeyDown(SDL_SCANCODE_R))
 	{
-		STMA::ChangeState(new TitleState);
+		STMA::ChangeState(new TitleState());
 	}
 }
 

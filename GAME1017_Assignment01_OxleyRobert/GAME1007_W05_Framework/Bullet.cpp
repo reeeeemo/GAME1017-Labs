@@ -19,7 +19,11 @@ void Bullet::Update(double dt) {
 }
 
 double Bullet::GetXpos() {
-	return m_dst.x;
+	if (this->GetRect() != nullptr)
+	{
+		return m_dst.x;
+	}
+	return 0;
 }
 
 SDL_FRect* Bullet::GetRect() {
