@@ -13,10 +13,11 @@ TiledLevel::TiledLevel(const unsigned short rows, const unsigned short cols, con
 		char key;
 		int x, y;
 		bool obs, haz;
-		inFile >> key >> x >> y >> obs >> haz;
 
 		while (!inFile.eof())
 		{
+			inFile >> key >> x >> y >> obs >> haz;
+
 			m_tiles.emplace(key, new Tile({x * tileWidth, y * tileHeight,tileWidth,tileHeight}, {0.0f,0.0f,(float)tileWidth,(float)tileHeight}, obs, haz));
 		}
 		inFile.close();

@@ -163,7 +163,7 @@ void GameState::Enter()
 
 	AddChild("platform", new Rectangle({ 100, 700, 300, 25 }, true));
 	AddChild("level", new TiledLevel(24,32,32,32,
-		"..Assets/dat/Tiledata.txt", "..Assets/dat/Level1.txt", "tiles"));
+		"../Assets/dat/Tiledata.txt", "../Assets/dat/Level1.txt", "tiles"));
 	AddChild("player", new PlatformPlayer({ 0,0,0,0 }, { 128,576,64,64 }));
 }
 
