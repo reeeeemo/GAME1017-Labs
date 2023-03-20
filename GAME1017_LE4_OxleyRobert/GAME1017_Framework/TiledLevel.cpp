@@ -56,9 +56,22 @@ TiledLevel::TiledLevel(const unsigned short rows, const unsigned short cols, con
 TiledLevel::~TiledLevel()
 {
 	// Clear the tile clones. This also clears the ones in m_obstacles.
+	for (unsigned row = 0; row < m_rows; row++)
+	{
+		for (unsigned col = 0; col < m_cols; col++)
+		{
+			delete m_level[row][col];
+			m_level[row][col] = nullptr;
+		}
+	}
 	
 	// Clear the original tiles.
-	
+	for (int i = 0; i < m_tiles.size(); i++)
+	{
+		delete m_tiles[i];
+		m_tiles[i] = nullptr;
+	}
+	m_tiles.clear();
 }
 
 void TiledLevel::Render()

@@ -31,6 +31,11 @@ void PlatformPlayer::Update()
 			SOMA::PlaySound("jump");
 			SetAnimation(STATE_JUMPING, 0, 0, 0);
 		}
+		if (EVMA::KeyPressed(SDL_SCANCODE_D))
+		{
+			m_accelX += 2.0;
+			SetAnimation(STATE_RUNNING, 0, 0, 0);
+		}
 		break;
 	case STATE_JUMPING:
 		// Hit the ground, transition to run.
@@ -39,9 +44,18 @@ void PlatformPlayer::Update()
 			SetAnimation(STATE_IDLING, 0, 0, 0);
 		}
 		break;
+	case STATE_RUNNING:
+		if (m_accelX <= 0)
+		{
+			m_accelX = 0;
+			SetAnimation(STATE_IDLING, 0, 0, 0);
+		}
+		break;
 	}
 	// Player movement. X axis first.
-		
+	m_velX += m_accelX + m_drag;
+	m_velX = std::min(std::max(m_velX, -m_maxVelX), m_maxVelX);
+	m_dst.x += static_cast<float>(m_velX);
 	// Y axis now.
 	m_velY += m_accelY + m_grav;
 	m_velY = std::min(std::max(m_velY, -m_maxVelY), m_maxVelY);
