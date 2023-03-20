@@ -31,13 +31,22 @@ void PlatformPlayer::Update()
 			SOMA::PlaySound("jump");
 			SetAnimation(STATE_JUMPING, 0, 0, 0);
 		}
-		if (EVMA::KeyPressed(SDL_SCANCODE_D))
+		if (EVMA::KeyHeld(SDL_SCANCODE_D) || EVMA::KeyHeld(SDL_SCANCODE_A))
 		{
-			m_accelX += 2.0;
 			SetAnimation(STATE_RUNNING, 0, 0, 0);
 		}
 		break;
 	case STATE_JUMPING:
+		// Move left and right
+		if (EVMA::KeyHeld(SDL_SCANCODE_A))
+		{
+			m_accelX = -1.5;
+		}
+		if (EVMA::KeyHeld(SDL_SCANCODE_D))
+		{
+			m_accelX = 1.5;
+		}
+
 		// Hit the ground, transition to run.
 		if (m_grounded)
 		{
@@ -45,15 +54,32 @@ void PlatformPlayer::Update()
 		}
 		break;
 	case STATE_RUNNING:
-		if (m_accelX <= 0)
+		// Move left and right
+		if (EVMA::KeyHeld(SDL_SCANCODE_A))
 		{
-			m_accelX = 0;
+			m_accelX = -1.5;
+		}
+		if (EVMA::KeyHeld(SDL_SCANCODE_D))
+		{
+			m_accelX = 1.5;
+		}
+		// Transition to jump.
+		if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_grounded)
+		{
+			m_accelY = -kJumpForce; // SetAccelY(-JUMPFORCE);
+			m_grounded = false; // SetGrounded(false);
+			SOMA::PlaySound("jump");
+			SetAnimation(STATE_JUMPING, 0, 0, 0);
+		}
+		if (EVMA::KeyReleased(SDL_SCANCODE_A) && EVMA::KeyReleased(SDL_SCANCODE_D))
+		{
 			SetAnimation(STATE_IDLING, 0, 0, 0);
 		}
 		break;
 	}
 	// Player movement. X axis first.
-	m_velX += m_accelX + m_drag;
+	m_velX += m_accelX; // Acceleration
+	m_velX *= (m_grounded ? m_drag : 1.0);
 	m_velX = std::min(std::max(m_velX, -m_maxVelX), m_maxVelX);
 	m_dst.x += static_cast<float>(m_velX);
 	// Y axis now.

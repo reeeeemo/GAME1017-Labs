@@ -161,9 +161,10 @@ void GameState::Enter()
 	SOMA::SetMusicVolume(16);
 	SOMA::PlayMusic("guile", -1, 2000);
 
-	AddChild("platform", new Rectangle({ 100, 700, 300, 25 }, true));
 	AddChild("level", new TiledLevel(24,32,32,32,
 		"../Assets/dat/Tiledata.txt", "../Assets/dat/Level1.txt", "tiles"));
+	//AddChild("platform", new Rectangle({ 0, 700, 1024, 25 }, true));
+
 	AddChild("player", new PlatformPlayer({ 0,0,0,0 }, { 128,576,64,64 }));
 }
 
@@ -185,18 +186,36 @@ void GameState::Update()
 	// Check collision.
 	PlatformPlayer* pp = static_cast<PlatformPlayer*>(GetChild("player"));
 	SDL_FRect* p = pp->GetDst(); // Copies address of player m_dst.
-	SDL_FRect* t = static_cast<Rectangle*>(GetChild("platform"))->GetDst();
-	if (COMA::AABBCheck(*p, *t)) // Collision check between player rect and platform rect.
+	vector<Tile*>& obstacles = static_cast<TiledLevel*>(GetChild("level"))->GetObstacles();
+
+	for (int i = 0; i < obstacles.size(); i++)
 	{
-		if ((p->y + p->h) - (float)pp->GetVelY() <= t->y) // If bottom of player < top of platform in "previous frame"
-		{ // Colliding with top side of tile. Or collided from top.
-			pp->StopY();
-			pp->SetY(t->y - p->h);
-			pp->SetGrounded(true);
+		SDL_FRect* t = obstacles[i]->GetDst();
+		if (COMA::AABBCheck(*p, *t)) // Collision check between player rect and platform rect.
+		{
+			if ((p->y + p->h) - (float)pp->GetVelY() <= t->y) // If bottom of player < top of platform in "previous frame"
+			{ // Colliding with top side of tile. Or collided from top.
+				pp->StopY();
+				pp->SetY(t->y - p->h);
+				pp->SetGrounded(true);
+			} else if (p->y - static_cast<float>(pp->GetVelY()) >= t->y + t->h)
+			{ // Colliding with bottom side of tile
+				pp->StopY();
+				pp->SetY(t->y + t->h);
+			} else if ((p->x + p->w) - static_cast<float>(pp->GetVelX()) <= t->x)
+			{ // Colliding with left side of tile
+				pp->StopX();
+				pp->SetX(t->x - p->w);
+			} else if (p->x - static_cast<float>(pp->GetVelX()) >= (t->x + t->w))
+			{ // Colliding with right side of tile
+				pp->StopX();
+				pp->SetX(t->x + t->w);
+			}
+			// Other checks to come.
 		}
-		// Other checks to come.
+		// End collision checks.
 	}
-	// End collision checks.
+	
 }
 
 void GameState::Render()
