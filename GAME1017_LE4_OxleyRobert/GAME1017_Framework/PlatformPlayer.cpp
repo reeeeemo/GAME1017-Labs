@@ -99,6 +99,15 @@ void PlatformPlayer::Update()
 	m_velY = std::min(std::max(m_velY, -m_maxVelY), m_maxVelY);
 	m_dst.y += (float)m_velY;
 	
+	// Wrapping on screen
+	if (m_dst.x < -m_dst.w / 2) {
+		m_dst.x = kWidth + m_dst.w / 2;
+	}
+	else if (m_dst.x > kWidth + m_dst.w / 2) {
+		m_dst.x = 0 - m_dst.w / 2;
+	}
+
+
 	m_accelX = m_accelY = 0.0; // Resetting accel every frame.
 	// Invoke the animation.
 	Animate();
