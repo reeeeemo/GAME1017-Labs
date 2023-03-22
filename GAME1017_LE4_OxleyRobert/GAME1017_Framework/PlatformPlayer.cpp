@@ -100,11 +100,11 @@ void PlatformPlayer::Update()
 	m_dst.y += (float)m_velY;
 	
 	// Wrapping on screen
-	if (m_dst.x < -m_dst.w / 2) {
-		m_dst.x = kWidth + m_dst.w / 2;
+	if (m_dst.x < -m_dst.w) {
+		m_dst.x = kWidth;
 	}
-	else if (m_dst.x > kWidth + m_dst.w / 2) {
-		m_dst.x = 0 - m_dst.w / 2;
+	else if (m_dst.x > kWidth) {
+		m_dst.x = -m_dst.w;
 	}
 
 
