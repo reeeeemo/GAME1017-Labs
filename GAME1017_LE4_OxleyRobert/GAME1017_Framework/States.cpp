@@ -211,7 +211,6 @@ void GameState::Update()
 				pp->StopX();
 				pp->SetX(t->x + t->w);
 			}
-			// Other checks to come.
 		}
 		// End collision checks.
 	}
@@ -223,6 +222,7 @@ void GameState::Render()
 	SDL_SetRenderDrawColor(REMA::GetRenderer(), 0, 0, 0, 255);
 	SDL_RenderClear(REMA::GetRenderer());
 	State::Render();
+
 }
 
 void GameState::Exit()

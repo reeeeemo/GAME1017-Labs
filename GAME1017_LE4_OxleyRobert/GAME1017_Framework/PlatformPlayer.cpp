@@ -9,12 +9,20 @@
 #include <iostream>
 using namespace std;
 
+const std::string plrSpriteFile = "../Assets/img/Player.png";
+const std::string plrTextFile = "../Assets/dat/Player.txt";
+const std::string plrKey = "player";
+
 PlatformPlayer::PlatformPlayer(SDL_Rect src, SDL_FRect dst) :AnimatedSprite(src, dst, STATE_JUMPING),
 	m_grounded(false), m_facingLeft(false), m_maxVelX(9.0),
 	m_maxVelY(kJumpForce), m_grav(kGrav), m_drag(0.8)
 {
+	TEMA::LoadSpriteMap(plrTextFile.c_str(), plrSpriteFile.c_str(), plrKey);
+	SetSpriteSheet(TEMA::GetSpriteSheet(plrKey));
+
+	//TEMA::Load("../Assets/img/player.png", "player");
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
-	SetAnimation(m_state, 0, 0, 0); // Initialize jump animation.
+	SetAnimation(m_state, "idle"); // Initialize jump animation.
 }
 
 void PlatformPlayer::Update()
@@ -33,7 +41,7 @@ void PlatformPlayer::Update()
 		}
 		if (EVMA::KeyHeld(SDL_SCANCODE_D) || EVMA::KeyHeld(SDL_SCANCODE_A))
 		{
-			SetAnimation(STATE_RUNNING, 0, 0, 0);
+			SetAnimation(STATE_RUNNING, "run");
 		}
 		break;
 	case STATE_JUMPING:
@@ -50,7 +58,7 @@ void PlatformPlayer::Update()
 		// Hit the ground, transition to run.
 		if (m_grounded)
 		{
-			SetAnimation(STATE_IDLING, 0, 0, 0);
+			SetAnimation(STATE_IDLING, "idle");
 		}
 		break;
 	case STATE_RUNNING:
@@ -73,7 +81,7 @@ void PlatformPlayer::Update()
 		}
 		if (EVMA::KeyReleased(SDL_SCANCODE_A) && EVMA::KeyReleased(SDL_SCANCODE_D))
 		{
-			SetAnimation(STATE_IDLING, 0, 0, 0);
+			SetAnimation(STATE_IDLING, "idle");
 		}
 		break;
 	}
@@ -94,7 +102,10 @@ void PlatformPlayer::Update()
 
 void PlatformPlayer::Render()
 {
-	DEMA::DrawRect(*GetDst(), true, { 255, 0, 0, 255 });
+	//DEMA::DrawRect(*GetDst(), true, { 255, 0, 0, 255 });
+
+	SDL_RenderCopyF(REMA::GetRenderer(), GetSpriteSheet()->GetTexture(),
+		&m_src, &m_dst);
 }
 
 void PlatformPlayer::Stop()
