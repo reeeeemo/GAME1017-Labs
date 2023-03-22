@@ -50,8 +50,6 @@ void TextureManager::LoadSpriteMap(const char* text_file, const char* sprite_fil
 			else {
 				if (new_anim.name != anim_name && new_anim.name != "") { // If we are starting a new animation.
 					new_spriteSheet->AddAnimation(new_anim);
-					std::cout << new_anim.name << std::endl;
-
 				}
 				new_anim = Animation();
 				new_anim.name = anim_name;
@@ -62,9 +60,6 @@ void TextureManager::LoadSpriteMap(const char* text_file, const char* sprite_fil
 
 		}
 		new_spriteSheet->AddAnimation(new_anim); // Needed for final animation that does not get added.
-		std::cout << new_anim.name << std::endl;
-		std::cout << vec4[0] << ", " << vec4[1] << ", " << vec4[2] << ", " << vec4[3];
-
 	}
 	else {
 		std::cout << "Could not process .txt file, perhaps a spelling error?\n\n";
@@ -73,14 +68,6 @@ void TextureManager::LoadSpriteMap(const char* text_file, const char* sprite_fil
 	s_spritesheets.emplace(key, new_spriteSheet);
 }
 
-void TextureManager::PlayAnimation(const std::string& sprite_sheet_name, Animation& animation, const int x, const int y, const float speed)
-{
-	const float total_frames = static_cast<float>(animation.m_frames.size());
-	const int anim_rate = static_cast<int>(round(total_frames / 2.0f / speed));
-
-	if (total_frames > 1) {
-	}
-}
 
 void TextureManager::Unload(const std::string key)
 {

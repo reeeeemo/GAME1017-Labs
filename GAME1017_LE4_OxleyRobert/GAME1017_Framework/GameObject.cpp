@@ -63,12 +63,17 @@ void AnimatedSprite::SetAnimation(AnimState state, std::string animation_name)
 	if (m_spriteSheet != nullptr) {
 		m_currentAnimation = m_spriteSheet->GetAnimation(animation_name);
 		m_state = state;
-		m_frame = m_currentAnimation.current_frame;
+		m_frame = m_currentAnimation.current_frame = 0;
+
 		m_frameMax = m_currentAnimation.m_frames.size();
-		m_sprite = m_spriteMin = m_currentAnimation.current_frame;
+		m_sprite = m_spriteMin = m_currentAnimation.m_frames[m_currentAnimation.current_frame].w % 128;
 		m_spriteMax = m_currentAnimation.m_frames.size();
-		m_src.x = m_src.w * m_sprite;
-		m_src.y = m_currentAnimation.m_frames[0].y;
+		m_src.w = m_currentAnimation.m_frames[m_currentAnimation.current_frame].w;
+		m_src.h = m_currentAnimation.m_frames[m_currentAnimation.current_frame].h;
+
+
+		m_src.x = m_src.w * m_sprite;  
+		m_src.y = m_currentAnimation.m_frames[m_currentAnimation.current_frame].y;
 	}
 	else {
 		std::cout << "spritesheet does not exist!";
@@ -84,5 +89,6 @@ void AnimatedSprite::Animate()
 		if (++m_sprite == m_spriteMax)
 			m_sprite = m_spriteMin; // I don't use % in case m_sprite doesn't start at 0.
 		m_src.x = m_src.w * m_sprite; // Moved to outside if.
+
 	}
 }

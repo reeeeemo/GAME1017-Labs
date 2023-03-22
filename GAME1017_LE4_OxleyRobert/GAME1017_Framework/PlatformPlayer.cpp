@@ -13,7 +13,7 @@ const std::string plrSpriteFile = "../Assets/img/Player.png";
 const std::string plrTextFile = "../Assets/dat/Player.txt";
 const std::string plrKey = "player";
 
-PlatformPlayer::PlatformPlayer(SDL_Rect src, SDL_FRect dst) :AnimatedSprite(src, dst, STATE_JUMPING),
+PlatformPlayer::PlatformPlayer(SDL_Rect src, SDL_FRect dst) :AnimatedSprite(src, dst, STATE_IDLING),
 	m_grounded(false), m_facingLeft(false), m_maxVelX(9.0),
 	m_maxVelY(kJumpForce), m_grav(kGrav), m_drag(0.8)
 {
@@ -22,7 +22,7 @@ PlatformPlayer::PlatformPlayer(SDL_Rect src, SDL_FRect dst) :AnimatedSprite(src,
 
 	//TEMA::Load("../Assets/img/player.png", "player");
 	m_accelX = m_accelY = m_velX = m_velY = 0.0;
-	SetAnimation(m_state, "idle"); // Initialize jump animation.
+	SetAnimation(m_state, "idle"); // Initialize idle animation.
 }
 
 void PlatformPlayer::Update()
@@ -37,9 +37,9 @@ void PlatformPlayer::Update()
 			m_accelY = -kJumpForce; // SetAccelY(-JUMPFORCE);
 			m_grounded = false; // SetGrounded(false);
 			SOMA::PlaySound("jump");
-			SetAnimation(STATE_JUMPING, 0, 0, 0);
+			SetAnimation(STATE_JUMPING, "jump");
 		}
-		if (EVMA::KeyHeld(SDL_SCANCODE_D) || EVMA::KeyHeld(SDL_SCANCODE_A))
+		else if (EVMA::KeyHeld(SDL_SCANCODE_D) || EVMA::KeyHeld(SDL_SCANCODE_A))
 		{
 			SetAnimation(STATE_RUNNING, "run");
 		}
@@ -49,10 +49,12 @@ void PlatformPlayer::Update()
 		if (EVMA::KeyHeld(SDL_SCANCODE_A))
 		{
 			m_accelX = -1.5;
+			m_facingLeft = true;
 		}
 		if (EVMA::KeyHeld(SDL_SCANCODE_D))
 		{
 			m_accelX = 1.5;
+			m_facingLeft = false;
 		}
 
 		// Hit the ground, transition to run.
@@ -66,10 +68,12 @@ void PlatformPlayer::Update()
 		if (EVMA::KeyHeld(SDL_SCANCODE_A))
 		{
 			m_accelX = -1.5;
+			m_facingLeft = true;
 		}
 		if (EVMA::KeyHeld(SDL_SCANCODE_D))
 		{
 			m_accelX = 1.5;
+			m_facingLeft = false;
 		}
 		// Transition to jump.
 		if (EVMA::KeyPressed(SDL_SCANCODE_SPACE) && m_grounded)
@@ -77,9 +81,9 @@ void PlatformPlayer::Update()
 			m_accelY = -kJumpForce; // SetAccelY(-JUMPFORCE);
 			m_grounded = false; // SetGrounded(false);
 			SOMA::PlaySound("jump");
-			SetAnimation(STATE_JUMPING, 0, 0, 0);
+			SetAnimation(STATE_JUMPING, "jump");
 		}
-		if (EVMA::KeyReleased(SDL_SCANCODE_A) && EVMA::KeyReleased(SDL_SCANCODE_D))
+		else if (EVMA::KeyReleased(SDL_SCANCODE_A) || EVMA::KeyReleased(SDL_SCANCODE_D))
 		{
 			SetAnimation(STATE_IDLING, "idle");
 		}
@@ -104,8 +108,15 @@ void PlatformPlayer::Render()
 {
 	//DEMA::DrawRect(*GetDst(), true, { 255, 0, 0, 255 });
 
-	SDL_RenderCopyF(REMA::GetRenderer(), GetSpriteSheet()->GetTexture(),
-		&m_src, &m_dst);
+	if (m_facingLeft) {
+		SDL_RenderCopyExF(REMA::GetRenderer(), TEMA::GetTexture(plrKey),
+			GetSrc(), GetDst(), 0, NULL, SDL_FLIP_HORIZONTAL);
+	}
+	else {
+		SDL_RenderCopyExF(REMA::GetRenderer(), TEMA::GetTexture(plrKey),
+			GetSrc(), GetDst(), 0, NULL, SDL_FLIP_NONE);
+	}
+	
 }
 
 void PlatformPlayer::Stop()
