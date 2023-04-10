@@ -30,7 +30,7 @@ void Obstacle::Update()
 		m_pos.x -= kScrollSpeed;
 		// Update the image dst rect.
 		m_pImage->GetDst()->x = m_pos.x;
-		m_pImage->GetDst()->y = m_pos.y - m_pImage->GetSrc()->h / 5;
+		m_pImage->GetDst()->y = m_pos.y - m_pImage->GetSrc()->h / 5.0f;
 
 		m_pImage->Update();
 	}
@@ -41,15 +41,11 @@ void Obstacle::Update()
 
 void Obstacle::Render()
 {
-	// Take out when using image.
 	SDL_FRect m_dst = { m_pos.x, m_pos.y, 128, 128 };
 	if (m_hasImage)
 	{
 		// Render image
 		m_pImage->Render();
-		// Red Box for Week 9 lab..
-		//SDL_SetRenderDrawColor(REMA::GetRenderer(), 255, 0, 0, 255);
-		//SDL_RenderFillRectF(REMA::GetRenderer(), &m_dst);
 	}
 	// Render border for just week 9 lab.
 	

@@ -8,6 +8,7 @@
 enum CurrentObstacle {
 	GREEN_TREE,
 	BLUE_TREE,
+	HANGING_RED_TREE,
 	NUM_OBSTACLES
 };
 

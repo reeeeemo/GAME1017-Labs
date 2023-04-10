@@ -39,7 +39,10 @@ void ObstacleRow::Update()
 						m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f, 128.0f, 168.0f }, true, new Image({ 0, 0, 110, 168 }, { 128 / 2, -(168 / 2), 110, 168 }, "obstacleSheet")));
 						break;
 					case BLUE_TREE:
-						m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f, 128.0f, 168.0f }, true, new Image({ 0, 184, 110, 168 }, { 128 / 2, -(168 / 2), 110, 168 }, "obstacleSheet")));
+						m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f, 128.0f, 168.0f }, true, new Image({ 110, 164, 110, 168 }, { 128 / 2, -(168 / 2), 110, 168 }, "obstacleSheet")));
+						break;
+					case HANGING_RED_TREE:
+						m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f - 128.0f, 128.0f, 168.0f }, true, new Image({ 380, 356, 120, 184 }, { 128 / 2, -(184 / 2), 110, 184 }, "obstacleSheet")));
 						break;
 					}
 				}
