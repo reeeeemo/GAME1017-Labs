@@ -12,8 +12,7 @@ ObstacleRow::ObstacleRow():m_gapCtr(0), m_gapMax(3)
 	m_obstacles.shrink_to_fit();
 
 	// Load the textures
-	TEMA::Load("../Assets/img/obstacles/Introl_Trap.png", "obstacleSheet");
-	InitializeTextures();
+	TEMA::Load("../Assets/img/obstacles/Tilesets/trees.png", "obstacleSheet");
 
 }
 
@@ -32,10 +31,20 @@ void ObstacleRow::Update()
 
 				if (m_gapCtr++ % m_gapMax == 0)
 				{
-					m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f, 128.0f, 128.0f }, true, new Image({ 160, 480, 128, 128 }, { 0, 0, 128, 128 }, "obstacleSheet")));
+					// Lazy way of picking random obstacles :)
+					PickRandomObstacle();
+					switch (curObstacle)
+					{
+					case GREEN_TREE:
+						m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f, 128.0f, 168.0f }, true, new Image({ 0, 0, 110, 168 }, { 128 / 2, -(168 / 2), 110, 168 }, "obstacleSheet")));
+						break;
+					case BLUE_TREE:
+						m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f, 128.0f, 168.0f }, true, new Image({ 0, 184, 110, 168 }, { 128 / 2, -(168 / 2), 110, 168 }, "obstacleSheet")));
+						break;
+					}
 				}
 				else {
-					m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f, 128.0f, 128.0f}, false, nullptr));
+					m_obstacles.push_back(new Obstacle({ m_obstacles.back()->GetPos().x + 128.0f, 384.0f, 128.0f, 168.0f }, false, nullptr));
 				}
 
 
@@ -63,12 +72,8 @@ void ObstacleRow::Render()
 	}
 }
 
-// Does not work atm, I hate poinjtersedwgfs
-void ObstacleRow::InitializeTextures()
+void ObstacleRow::PickRandomObstacle()
 {
-	m_obstacleTextures[SPIKE] = new Image( { 0, 0, 320, 320 }, { 0, 0, 320, 320 }, "obstacleSheet");
-	m_obstacleTextures[SAW] = new Image( { 0, 0, 320, 320 }, { 0, 0, 320, 320 }, "obstacleSheet");
-	m_obstacleTextures[LONG_SPIKE] = new Image( { 160, 480, 128, 128 }, { 0, 0, 128, 128 }, "obstacleSheet");
-
-	m_currentObstacleTexture = m_obstacleTextures[LONG_SPIKE];
+	curObstacle = static_cast<CurrentObstacle>(rand() % static_cast<int>(CurrentObstacle::NUM_OBSTACLES));
 }
+

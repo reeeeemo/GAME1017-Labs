@@ -24,14 +24,18 @@ Obstacle::~Obstacle()
 
 void Obstacle::Update()
 {
-	m_pos.x -= kScrollSpeed;
+	
 	if (m_hasImage)
 	{
+		m_pos.x -= kScrollSpeed;
 		// Update the image dst rect.
 		m_pImage->GetDst()->x = m_pos.x;
-		m_pImage->GetDst()->y = m_pos.y;
+		m_pImage->GetDst()->y = m_pos.y - m_pImage->GetSrc()->h / 5;
 
 		m_pImage->Update();
+	}
+	else {
+		m_pos.x -= kScrollSpeed;
 	}
 }
 

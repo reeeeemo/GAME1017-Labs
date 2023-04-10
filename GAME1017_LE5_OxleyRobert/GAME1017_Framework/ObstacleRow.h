@@ -5,12 +5,10 @@
 #include <vector>
 #include <map>
 
-// Not great to put in same .h file, but for this exercise it's fine.
-enum ObstacleTextures {
-	SPIKE,
-	SAW,
-	LONG_SPIKE,
-	NUM_OF_OBSTACLES,
+enum CurrentObstacle {
+	GREEN_TREE,
+	BLUE_TREE,
+	NUM_OBSTACLES
 };
 
 class ObstacleRow : public GameObject
@@ -20,12 +18,12 @@ public: // Methods.
 	void Update();
 	void Render();
 	
-	void InitializeTextures();
+	void PickRandomObstacle();
+
 private: // Properties.
 	std::vector<Obstacle*> m_obstacles;
 	int m_gapCtr, m_gapMax;
-	std::map<ObstacleTextures, Image*> m_obstacleTextures;
-	Image* m_currentObstacleTexture;
+	CurrentObstacle curObstacle;
 };
 
 #endif
