@@ -5,11 +5,12 @@ Obstacle::Obstacle(const SDL_FRect dst, bool hasImage, const SDL_Rect src, const
 	:m_hasImage(hasImage), m_pImage(nullptr)
 {
 	m_pos = { dst.x, dst.y };
-	if (m_hasImage)
-	{
-		// Create a new image object and pass the parameters
-		// For you to do for LE5
-	}
+}
+
+Obstacle::Obstacle(const SDL_FRect dst, bool hasImage, Image* image) : m_hasImage(hasImage), m_pImage(image)
+{
+	m_pos = { dst.x, dst.y };
+	
 }
 
 Obstacle::~Obstacle()
@@ -27,7 +28,10 @@ void Obstacle::Update()
 	if (m_hasImage)
 	{
 		// Update the image dst rect.
-		//m_pImage->GetDst()->x;
+		m_pImage->GetDst()->x = m_pos.x;
+		m_pImage->GetDst()->y = m_pos.y;
+
+		m_pImage->Update();
 	}
 }
 
@@ -38,10 +42,10 @@ void Obstacle::Render()
 	if (m_hasImage)
 	{
 		// Render image
-		// SDL_RenderCopyF(...);
+		m_pImage->Render();
 		// Red Box for Week 9 lab..
-		SDL_SetRenderDrawColor(REMA::GetRenderer(), 255, 0, 0, 255);
-		SDL_RenderFillRectF(REMA::GetRenderer(), &m_dst);
+		//SDL_SetRenderDrawColor(REMA::GetRenderer(), 255, 0, 0, 255);
+		//SDL_RenderFillRectF(REMA::GetRenderer(), &m_dst);
 	}
 	// Render border for just week 9 lab.
 	

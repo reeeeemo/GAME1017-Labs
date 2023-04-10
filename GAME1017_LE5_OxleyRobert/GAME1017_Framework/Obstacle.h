@@ -8,6 +8,7 @@ class Obstacle // Not a GameObject.
 {
 public:
 	Obstacle(const SDL_FRect dst, bool hasImage = false, const SDL_Rect src = {0,0,0,0}, const char* key = "");
+	Obstacle(const SDL_FRect dst, bool hasImage = false, Image* image = nullptr);
 	~Obstacle();
 	void Update();
 	void Render();
